@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './PatientDash.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Main from './Main'
 function PatientDash() {
   const userId=localStorage.getItem("userId");
   const navigate = useNavigate();
-  const [patientName, setPatientName] = useState('Patient');
-
-  useEffect(() => {
-
-    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    setPatientName(storedUser.name || storedUser.username || storedUser.patientId || storedUser.id || 'Patient');
-  }, []);
 
   const handleLogout = () => {
     alert('logged out successfully.');

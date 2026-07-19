@@ -27,7 +27,6 @@ function Register() {
   })
 
   const [errors, setErrors] = useState({})
-  const [submitted, setSubmitted] = useState(false)
 
   const validateForm = () => {
     const newErrors = {}
@@ -113,7 +112,6 @@ function Register() {
             onClose: () => navigate('/')
           })
           
-          setSubmitted(true)
           handleReset(); 
 
         } else {

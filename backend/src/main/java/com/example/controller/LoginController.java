@@ -1,15 +1,20 @@
 package com.example.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.DTO.LoginRequest;
 import com.example.DTO.LoginResponse;
 import com.example.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins = {"http://localhost:3000","https://clinic-sphere-online-clinic-system-teal.vercel.app/"})
+@CrossOrigin(origins = {"http://localhost:3000","https://clinicsphere-onlineclinicsystem.vercel.app/"})
 public class LoginController {
 
     @Autowired

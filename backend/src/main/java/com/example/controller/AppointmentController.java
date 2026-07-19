@@ -10,13 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.DTO.RegisterRequest;
 import com.example.bean.AppointmentBean;
-import com.example.bean.DoctorBean;
-
 import com.example.service.AuthService;
-import com.example.service.*;
-@CrossOrigin(origins = {"http://localhost:3000","https://clinic-sphere-online-clinic-system-teal.vercel.app/"})
+@CrossOrigin(origins = {"http://localhost:3000","https://clinicsphere-onlineclinicsystem.vercel.app/"})
 @RestController
 @RequestMapping("/Appointment")
 public class AppointmentController {

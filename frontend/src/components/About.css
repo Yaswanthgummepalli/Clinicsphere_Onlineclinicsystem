@@ -1,0 +1,186 @@
+.about-wrapper {
+    padding: 60px 20px;
+    background-color: #f0f2f5;
+    min-height: calc(100vh - 80px);
+}
+
+.about-content-card {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.about-title {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+    font-weight: 800;
+}
+
+.about-intro {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.about-intro-text {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #576574;
+    margin: 0 auto;
+    max-width: 750px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.about-card {
+    padding: 30px;
+    background: linear-gradient(145deg, #ffffff, #f1f2f6);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.about-card-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.about-card-title {
+    color: #4b6cb7;
+    margin-bottom: 10px;
+}
+
+.about-card-text {
+    color: #636e72;
+    font-size: 0.95rem;
+}
+
+.about-cta {
+    margin-top: 60px;
+    padding: 40px;
+    background: #4b6cb7;
+    border-radius: 15px;
+    color: white;
+}
+
+.about-cta-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-cta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.about-cta-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.about-cta-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+
+@media (max-width: 768px) {
+    .about-wrapper {
+        padding: 40px 15px;
+    }
+
+    .about-content-card {
+        padding: 35px;
+        border-radius: 15px;
+    }
+
+    .about-title {
+        font-size: 2.3rem;
+        margin-bottom: 30px;
+    }
+
+    .about-intro {
+        margin-bottom: 35px;
+    }
+
+    .about-intro-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .about-grid {
+        gap: 25px; 
+    }
+
+    .about-cta {
+        margin-top: 40px;
+        padding: 30px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .about-wrapper {
+        padding: 20px 10px;
+    }
+
+    .about-content-card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .about-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .about-intro-text {
+        font-size: 1rem;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr; 
+        gap: 20px;
+    }
+
+    .about-card {
+        padding: 20px;
+    }
+
+    .about-card-icon {
+        font-size: 2.5rem;
+    }
+
+    .about-cta {
+        margin-top: 30px;
+        padding: 20px 15px;
+    }
+
+    .about-cta-title {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+
+    .about-cta-item {
+        align-items: flex-start; 
+        gap: 10px;
+    }
+}

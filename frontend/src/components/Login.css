@@ -1,0 +1,120 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Arial', sans-serif;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.login-form {
+  background: white;
+  padding: 25px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.login-title {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: bold;
+}
+
+.login-input,
+.login-select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.login-select {
+  background: white;
+}
+
+.login-input:focus,
+.login-select:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.login-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.login-submit-btn:hover {
+  background: linear-gradient(135deg, #ff5252 0%, #ff8c00 100%);
+}
+
+.login-submit-btn:active {
+  transform: scale(0.99);
+}
+
+@media (min-width: 480px) {
+  .login-container {
+    padding: 20px;
+  }
+
+  .login-form {
+    padding: 35px 30px;
+  }
+
+  .login-title {
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+
+  .login-submit-btn {
+    padding: 15px;
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .login-form {
+    padding: 40px;
+  }
+
+  .login-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+}

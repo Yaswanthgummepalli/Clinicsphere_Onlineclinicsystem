@@ -84,6 +84,7 @@ public class AuthService{
 	{
 		if(ab!=null)
 		{
+			ab.setStatus("Pending");
 			adao.save(ab);
 			return 1;
 		}
@@ -155,22 +156,22 @@ public class AuthService{
     {
     	return ddao.findAll();
     }
-    public List<AppointmentBean> selectAppointmentsByPatientId(int patientId) {
+    public List<AppointmentBean> selectAppointmentsByPatientId(String patientId) {
         return adao.findByPatientId(patientId);
     }
-//    public FlightBean selectByFlightId(int flightId)
-//    {
-//    	FlightBean f=new FlightBean();
-//    Optional<FlightBean> opt=fdao.findById(Integer.valueOf(flightId));
-//    if(opt.isPresent())
-//    {
-//     f=opt.get();
-//    }
-//    return f;
-//    }
-//   
-//	
-//	
+    
+	public List<AppointmentBean> selectAllAppointments() {
+		return adao.findAll();
+	}
+	public AppointmentBean confirmAppointment(Integer appointmentId)
+	{
+	    AppointmentBean appointment=adao.findById(appointmentId)
+	            .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+	    appointment.setStatus("Confirmed");
+
+	    return adao.save(appointment);
+	}
 	
 	
 }

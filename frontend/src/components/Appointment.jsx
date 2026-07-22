@@ -68,21 +68,7 @@ function Appointment() {
     }
 
  
-    const tempLocalId = `local-${Date.now()}`;
-    const selectedDoctor = doctors.find(d => String(d.userId || d.id) === String(formData.doctorId));
-    const newAppointment = {
-      id: tempLocalId, // Use temp ID for local storage initially
-      ...formData,
-      doctorName: selectedDoctor?.doctor_name || 'N/A',
-      specialization: selectedDoctor?.specialization || 'N/A',
-      status: 'Pending',
-      createdAt: new Date().toLocaleDateString()
-    };
-    
    
-    const existingApts = JSON.parse(localStorage.getItem('clinic_sphere_appointments') || '[]');
-    localStorage.setItem('clinic_sphere_appointments', JSON.stringify([newAppointment, ...existingApts]));
-    setAppointments([newAppointment, ...appointments]); // Update UI
     setFormData({ patientId: '', doctorId: '', appointmentDate: '', appointmentTime: '' });
     setErrors({});
     alert('Appointment Request Submitted! We are processing your request.');
@@ -94,120 +80,61 @@ function Appointment() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData, status: 'Pending' }), // Send status as Pending
+        body: JSON.stringify(formData), 
       });
 
       if (response.ok) {
-        const backendResponse = await response.json(); // Assuming backend returns the saved appointment
-        alert('Appointment successfully registered with the backend!');
-
-        const currentLocalApts = JSON.parse(localStorage.getItem('clinic_sphere_appointments') || '[]');
-        const updatedLocalApts = currentLocalApts.map(apt => {
-          if (apt.id === tempLocalId) {
-            return { ...apt, id: backendResponse.id || tempLocalId, status: backendResponse.status || 'Pending' };
-          }
-          return apt;
-        });
-        localStorage.setItem('clinic_sphere_appointments', JSON.stringify(updatedLocalApts));
-      
-        handleFetchAppointments(); 
+        alert("Appointment booked successfully!");
+        handleFetchAppointments();
       } else {
-        const errorMsg = await response.text();
-        alert(`Failed to register appointment with backend: ${errorMsg}. It's saved locally.`);
-       
-        const currentLocalApts = JSON.parse(localStorage.getItem('clinic_sphere_appointments') || '[]');
-        const updatedLocalApts = currentLocalApts.map(apt => {
-          if (apt.id === tempLocalId) {
-            return { ...apt, status: 'Backend Failed' };
-          }
-          return apt;
-        });
-        localStorage.setItem('clinic_sphere_appointments', JSON.stringify(updatedLocalApts));
-        setAppointments(updatedLocalApts); 
+         const errorMsg = await response.text();
+          alert(errorMsg);
       }
     } catch (error) {
       console.error('Network Error during backend submission:', error);
-      alert('Network error: Could not connect to backend. Your appointment is saved locally and will be synced later.');
+      alert('Network error');
     }
   };
 
   const handleFetchAppointments = async () => {
+
     if (!searchPatientId.trim()) {
-      alert('Please enter a Patient ID to view details.');
-      return;
+        alert("Please enter Patient ID");
+        return;
     }
+
     setHasSearched(true);
 
-    let backendApts = [];
-    let localApts = [];
-
     try {
-    
-      const response = await fetch(`${API_URL_APPOINTMENT_GET_BY_PATIENT}${searchPatientId}`);
-      if (response.ok) {
-        backendApts = await response.json();
-      } else {
-        console.warn('No appointments found from backend. Relying on local storage.');
-      }
+
+        const response = await fetch(
+            `${API_URL_APPOINTMENT_GET_BY_PATIENT}${searchPatientId}`
+        );
+
+        if (response.ok) {
+
+            const backendApts = await response.json();
+
+           const enrichedAppointments = backendApts.map(apt => ({
+                ...apt,
+                doctorName: apt.doctorId
+            }));
+
+            setAppointments(enrichedAppointments);
+
+        } else {
+
+            setAppointments([]);
+
+        }
+
     } catch (error) {
-      console.error('Network Error fetching appointments from backend:', error);
+
+        console.error(error);
+
     }
 
-  
-    const allLocalApts = JSON.parse(localStorage.getItem('clinic_sphere_appointments') || '[]');
-    localApts = allLocalApts.filter(apt => String(apt.patientId) === String(searchPatientId));
-
-  
-    const mergedAppointmentsMap = new Map();
-
-    backendApts.forEach((apt) => {
-      if (apt.id) mergedAppointmentsMap.set(String(apt.id), apt);
-    });
-
-    localApts.forEach((localApt) => {
-      const lDoctorId = localApt.doctor_Id || localApt.doctorId;
-
-      if (localApt.status === "Confirmed") {
-        for (const [key, value] of mergedAppointmentsMap.entries()) {
-          const bDoctorId = value.doctor_Id || value.doctorId;
-
-          
-        
-          const isPending = value.status?.toLowerCase() === "pending";
-          const timeMatch = value.appointmentTime?.slice(0, 5) === localApt.appointmentTime?.slice(0, 5);
-
-          if (isPending &&
-              String(value.patientId) === String(localApt.patientId) &&
-              String(bDoctorId) === String(lDoctorId) &&
-              value.appointmentDate === localApt.appointmentDate &&
-              timeMatch) {
-            mergedAppointmentsMap.delete(key);
-          }
-        }
-      }
-      
-     
-     
-      mergedAppointmentsMap.set(String(localApt.id), localApt);
-    });
-
-    const finalAppointments = Array.from(mergedAppointmentsMap.values());
-
-   
-    const enrichedFinalApts = finalAppointments.map(apt => {
-      const dId = apt.doctor_Id || apt.doctorId;
-      const doc = doctors.find(d => String(d.userId || d.id) === String(dId));
-      return {
-        ...apt,
-        doctorId: dId,
-        doctorName: doc?.doctor_name || apt.doctorName || `Doctor (ID: ${dId})`, 
-        specialization: doc?.specialization || 'N/A',
-        status: apt.status || 'Pending'
-      };
-    });
-
-    setAppointments(enrichedFinalApts);
-  };
+};
 
   return (
     <div className="appointment-container">
@@ -318,7 +245,7 @@ function Appointment() {
             <div className="appointments-list">
               {appointments.map(apt => (
                 <div
-                  key={apt.id}
+                  key={apt.appointmentId}
                   className={`appointment-card ${apt.status === 'Confirmed' ? 'confirmed' : 'pending'}`}
                   onClick={() => setSelectedAppointment(apt)}
                 >
@@ -343,7 +270,7 @@ function Appointment() {
                 <h3>Appointment Details</h3>
                 <div className="detail-grid">
                   <div className="detail-item">
-                    <strong>Appointment ID:</strong> {selectedAppointment.id}
+                    <strong>Appointment ID:</strong> {selectedAppointment.appointmentId}
                   </div>
                   <div className="detail-item">
                     <strong>Patient ID:</strong> {selectedAppointment.patientId}
@@ -366,9 +293,7 @@ function Appointment() {
                   <div className="detail-item">
                     <strong>Status:</strong> <span className={`status-badge ${selectedAppointment.status.toLowerCase().replace(' ', '-')}`}>{selectedAppointment.status}</span>
                   </div>
-                  <div className="detail-item">
-                    <strong>Booked On:</strong> {selectedAppointment.createdAt}
-                  </div>
+                
                 </div>
                 <button 
                   className="close-btn"

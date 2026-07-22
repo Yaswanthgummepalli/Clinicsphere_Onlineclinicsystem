@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import com.example.bean.AppointmentBean;
 @Repository
 public interface AppointmentDao extends JpaRepository<AppointmentBean,Integer>{
-	List<AppointmentBean> findByPatientId(int patientId);
+	List<AppointmentBean> findByPatientId(String patientId);
 }

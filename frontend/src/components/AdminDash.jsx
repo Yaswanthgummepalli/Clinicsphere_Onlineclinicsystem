@@ -7,6 +7,8 @@ import BASE_URL from '../utils/api';
 
 const api_url_doctor = `${BASE_URL}/Doctor/Add`;
 const api_url_doctor_get = `${BASE_URL}/Doctor/selectAll`;
+const api_url_allappointments=`${BASE_URL}/Appointment/selectAllAppointments`;
+const API_CONFIRM =`${BASE_URL}/Appointment/confirm/`;
 
 function AdminDash() {
   const navigate = useNavigate();
@@ -46,9 +48,26 @@ function AdminDash() {
     }
   }, [activeTab]);
 
-  const fetchAppointments = () => {
-    const localApts = JSON.parse(localStorage.getItem('clinic_sphere_appointments') || '[]');
-    setAppointments(localApts);
+  const fetchAppointments = async() => {
+      try{
+        const response=await fetch(api_url_allappointments);
+        if(response.ok)
+        {
+          const data=await response.json();
+          setAppointments(data);
+
+        }
+        else{
+          toast.error("Failed to fetch appointments");
+        }
+      }
+      catch(error)
+      {
+        console.error(error);
+        toast.error("server unreachable");
+      }
+      
+
   };
 
   const fetchDoctors = async () => {
@@ -108,17 +127,34 @@ function AdminDash() {
     }
   };
 
-  const handleConfirmAppointment = (apt) => {
-    const localApts = JSON.parse(localStorage.getItem('clinic_sphere_appointments') || '[]');
-    const updatedApts = localApts.map(item => 
-      item.id === apt.id ? { ...item, status: 'Confirmed' } : item
-    );
-    
-    localStorage.setItem('clinic_sphere_appointments', JSON.stringify(updatedApts));
-    setAppointments(updatedApts);
-    toast.success("Appointment Confirmed successfully!");
-  };
+  const handleConfirm = async (appointmentId)=>{
 
+    try{
+
+        const response=await fetch(
+            `${API_CONFIRM}${appointmentId}`,
+            {
+                method:"PUT"
+            }
+        );
+
+        if(response.ok){
+
+            toast.success("Appointment Confirmed");
+            
+
+            fetchAppointments();
+
+        }
+
+    }
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
   return (
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -309,7 +345,7 @@ function AdminDash() {
                 </thead>
                 <tbody>
                   {appointments.length > 0 ? appointments.map(apt => (
-                    <tr key={apt.id}>
+                    <tr key={apt.appointmentId}>
                       <td>{apt.patientId}</td>
                       <td>{apt.doctor_Id || apt.doctorId}</td>
                       <td>{apt.appointmentDate}</td>
@@ -322,7 +358,7 @@ function AdminDash() {
                       <td>
                         {apt.status !== 'Confirmed' && (
                           <button 
-                            onClick={() => handleConfirmAppointment(apt)}
+                            onClick={() => handleConfirm(apt.appointmentId)}
                             className="confirm-button"
                           >
                             Confirm

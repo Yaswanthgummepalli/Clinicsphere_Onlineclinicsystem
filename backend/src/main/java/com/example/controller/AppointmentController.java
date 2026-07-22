@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,14 +28,21 @@ public class AppointmentController {
 		return authService.appointment(ab);
 	}
 	@GetMapping("/selectByPatientId/{patientId}")
-	public List<AppointmentBean> meth6(@PathVariable int patientId) 
+	public List<AppointmentBean> meth6(@PathVariable String patientId) 
 	{
 	    
 	    return authService.selectAppointmentsByPatientId(patientId); 
 	}
-//	@GetMapping("/flightById/{flightId}")
-//	public FlightBean meth5(@PathVariable int flightId)
-//	{
-//		return fserv.selectByFlightId(flightId);
-//	}
+	@PutMapping("/confirm/{appointmentId}")
+	public AppointmentBean confirmAppointment(@PathVariable Integer appointmentId)
+	{
+	    return authService.confirmAppointment(appointmentId);
+	}
+	@GetMapping("/selectAllAppointments")
+	public List<AppointmentBean> selectAllAppointments()
+	{
+		return authService.selectAllAppointments();
+	}
+	
+
 }

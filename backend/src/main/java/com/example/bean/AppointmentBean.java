@@ -19,6 +19,7 @@ public class AppointmentBean {
 	private LocalDate appointmentDate;
 	@Column
 	private String appointmentTime;
+	private String status;
 	public int getAppointmentId() {
 		return appointmentId;
 	}
@@ -49,6 +50,13 @@ public class AppointmentBean {
 	public void setAppointmentTime(String appointmentTime) {
 		this.appointmentTime = appointmentTime;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 	
 }
